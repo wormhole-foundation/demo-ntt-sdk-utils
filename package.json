@@ -1,28 +1,29 @@
 {
-  "name": "wormhole-ntt-sdk-utils",
-  "version": "1.0.0",
-  "description": "Utility scripts for Wormhole NTT SDK operations including peer registration and ownership management",
-  "scripts": {
-    "transfer-ownership": "npx ts-node src/solana/transferOwnershipToWallet.ts",
-    "claim-ownership": "npx ts-node src/solana/claimOwnership.ts",
-    "evm-register-peer": "npx ts-node src/evm/evmRegisterPeer.ts",
-    "evm-register-peer-calldata": "npx ts-node src/evm/evmRegisterPeerCalldata.ts",
-    "evm-to-evm-peer": "npx ts-node src/evm/evmToEvmPeer.ts",
-    "evm-to-solana-peer": "npx ts-node src/evm/evmToSolanaPeer.ts",
-    "evm-to-solana-peer-calldata": "npx ts-node src/evm/evmToSolanaPeerCalldata.ts"
-  },
-  "dependencies": {
-    "@project-serum/anchor": "^0.26.0",
-    "@solana/web3.js": "^1.95.0",
-    "@wormhole-foundation/sdk": "^3.8.0",
-    "@wormhole-foundation/sdk-evm-ntt": "^3.0.1",
-    "@wormhole-foundation/sdk-solana-ntt": "^3.0.1",
-    "ethers": "^6.13.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.0.0"
-  }
+	"name": "wormhole-ntt-sdk-utils",
+	"version": "1.0.0",
+	"description": "Utility scripts for Wormhole NTT SDK operations including peer registration and ownership management",
+	"scripts": {
+		"transfer-ownership": "npx ts-node src/solana/transferOwnershipToWallet.ts",
+		"claim-ownership": "npx ts-node src/solana/claimOwnership.ts",
+		"evm-register-peer": "npx ts-node src/evm/evmRegisterPeer.ts",
+		"evm-register-peer-calldata": "npx ts-node src/evm/evmRegisterPeerCalldata.ts",
+		"evm-to-evm-peer": "npx ts-node src/evm/evmToEvmPeer.ts",
+		"evm-to-solana-peer": "npx ts-node src/evm/evmToSolanaPeer.ts",
+		"evm-to-solana-peer-calldata": "npx ts-node src/evm/evmToSolanaPeerCalldata.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@project-serum/anchor": "^0.26.0",
+		"@solana/web3.js": "^1.95.0",
+		"@wormhole-foundation/sdk": "^3.8.0",
+		"@wormhole-foundation/sdk-evm-ntt": "^4.0.2",
+		"@wormhole-foundation/sdk-solana-ntt": "^4.0.2",
+		"ethers": "^6.13.0"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.0",
+		"ts-node": "^10.9.0",
+		"typescript": "^5.0.0",
+		"tsx": "^4.19.0"
+	}
 }
-
