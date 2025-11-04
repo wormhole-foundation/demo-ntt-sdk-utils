@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Environment variables
 .env
@@ -23,3 +22,4 @@ package-lock.json
 *.json
 !tsconfig.json
 !package.json
+!package-lock.json
