@@ -21,6 +21,8 @@ type Args = {
   solanaManager: string;
   solanaTransceiver: string;
   inboundLimit: string;
+  localChain: string;
+  network: string;
 };
 
 function parseArgs(): Args {
@@ -42,6 +44,8 @@ function parseArgs(): Args {
     solanaManager: get('--solana-manager')!,
     solanaTransceiver: get('--solana-transceiver')!,
     inboundLimit: get('--inbound-limit')!,
+    localChain: get('--local-chain') || 'Sepolia',
+    network: get('--network') || 'Testnet',
   };
 }
 
@@ -52,6 +56,7 @@ async function main() {
   const args = parseArgs();
 
   console.log('=== EVM-side Solana Peer Registration ===');
+  console.log(`Registering Solana as peer on ${args.localChain}`);
   console.log(`Manager: ${args.manager}`);
   console.log(`Transceiver: ${args.transceiver}`);
   console.log(`Solana Manager: ${args.solanaManager}`);
@@ -60,16 +65,16 @@ async function main() {
   console.log('');
 
   try {
-    // Create EVM NTT instance using direct constructor (following Solana script pattern)
-    const coreBridgeAddress = contracts.coreBridge('Testnet', 'Sepolia');
-    console.log(`Core Bridge Address: ${coreBridgeAddress}`);
+    // Create EVM NTT instance using direct constructor
+    const coreBridgeAddress = contracts.coreBridge(args.network as any, args.localChain as any);
+    console.log(`Core Bridge (${args.localChain}): ${coreBridgeAddress}`);
     
-    // Create provider from RPC URL (following CLI pattern)
+    // Create provider from RPC URL
     const provider = new ethers.JsonRpcProvider(args.rpc);
     
     const evmNtt = new EvmNtt(
-      'Testnet', // network
-      'Sepolia', // chain
+      args.network as any,
+      args.localChain as any,
       provider,
       {
         coreBridge: coreBridgeAddress,
@@ -93,10 +98,9 @@ async function main() {
       address: toUniversal('Solana', args.solanaTransceiver)
     } as any;
 
-
     // Create Wormhole instance and chain context for signSendWait
-    const wh = new Wormhole('Testnet', [evm.Platform]);
-    const ch = wh.getChain('Sepolia');
+    const wh = new Wormhole(args.network as any, [evm.Platform]);
+    const ch = wh.getChain(args.localChain as any);
     
     // Create a proper EVM signer using the SDK
     const signer = await evm.getSigner(
@@ -116,6 +120,11 @@ async function main() {
     try {
       await ssw(ch, setPeerGenerator, signer);
       console.log('✅ Solana manager peer registered successfully');
+      
+      // Wait a moment to ensure nonce is properly updated before next transaction
+      // This helps avoid "replacement fee too low" errors
+      console.log('Waiting for nonce update...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
     } catch (e) {
       console.error('❌ Solana manager peer registration failed:', e);
       process.exit(1);

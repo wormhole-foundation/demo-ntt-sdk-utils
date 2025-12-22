@@ -122,6 +122,11 @@ async function main() {
     try {
       await ssw(ch, setPeerGenerator, signer);
       console.log(`✅ ${args.remoteChain} manager peer registered successfully`);
+      
+      // Wait a moment to ensure nonce is properly updated before next transaction
+      // This helps avoid "replacement fee too low" errors
+      console.log('Waiting for nonce update...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
     } catch (e) {
       console.error(`❌ ${args.remoteChain} manager peer registration failed:`, e);
       process.exit(1);

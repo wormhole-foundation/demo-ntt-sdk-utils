@@ -77,12 +77,10 @@ async function main() {
   console.log('');
 
   try {
-    // Create EVM NTT instance for local chain only
     const coreBridgeAddress = contracts.coreBridge(args.network as any, args.localChain as any);
     console.log(`Core Bridge (${args.localChain}): ${coreBridgeAddress}`);
-    
     const provider = new ethers.JsonRpcProvider(args.rpc);
-    
+
     const evmNtt = new EvmNtt(
       args.network as any,
       args.localChain as any,
@@ -97,7 +95,6 @@ async function main() {
       }
     );
 
-    // Convert remote chain addresses to ChainAddress format
     const remoteManagerAddress = {
       chain: args.remoteChain,
       address: toUniversal(args.remoteChain as any, args.remoteManager)
@@ -110,33 +107,23 @@ async function main() {
     console.log('=== Generating Calldata ===');
 
     // Generate calldata for manager peer registration
-    console.log(`\n1. Registering ${args.remoteChain} manager as peer on ${args.localChain} manager...`);
-    const setPeerGenerator = evmNtt.setPeer(
-      remoteManagerAddress,
-      18, // EVM decimals (usually 18)
-      BigInt(args.inboundLimit)
-    );
-
+    console.log(`\n1. Generating calldata for ${args.remoteChain} manager peer on ${args.localChain} manager...`);
+    const setPeerGenerator = evmNtt.setPeer(remoteManagerAddress, 18, BigInt(args.inboundLimit));
     const managerCalldata = await extractCalldata(setPeerGenerator);
+
     console.log(`Manager Target: ${managerCalldata.to}`);
     console.log(`Manager Calldata: ${managerCalldata.data}`);
 
     // Generate calldata for transceiver peer registration
-    console.log(`\n2. Registering ${args.remoteChain} transceiver as peer on ${args.localChain} transceiver...`);
-    const setTransceiverPeerGenerator = evmNtt.setTransceiverPeer(
-      0, // transceiver index (0 for wormhole)
-      remoteTransceiverAddress
-    );
-
+    console.log(`\n2. Generating calldata for ${args.remoteChain} transceiver peer on ${args.localChain} transceiver...`);
+    const setTransceiverPeerGenerator = evmNtt.setTransceiverPeer(0, remoteTransceiverAddress);
     const transceiverCalldata = await extractCalldata(setTransceiverPeerGenerator);
+
     console.log(`Transceiver Target: ${transceiverCalldata.to}`);
     console.log(`Transceiver Calldata: ${transceiverCalldata.data}`);
-
-    console.log('\n🎉 Unidirectional peer registration calldata generated successfully!');
-    console.log(`\nExecute these transactions on ${args.localChain} to register ${args.remoteChain} as a peer.`);
-
+    console.log(`Transceiver Value: ${transceiverCalldata.value}`);
   } catch (error: any) {
-    console.error('❌ Error generating calldata:', error);
+    console.error('Error generating calldata:', error);
     process.exit(1);
   }
 }
