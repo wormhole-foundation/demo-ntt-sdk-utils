@@ -16,3 +16,5 @@ jobs:
   typecheck-latest:
     uses: wormhole-foundation/workflows/.github/workflows/wormhole-demo-typecheck.yml@main
     secrets: inherit
+    with:
+      package_manager: yarn
