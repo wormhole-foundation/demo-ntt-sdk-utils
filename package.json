@@ -17,7 +17,7 @@
 		"@solana/web3.js": "^1.95.0",
 		"@wormhole-foundation/sdk": "^4.7.4",
 		"@wormhole-foundation/sdk-evm-ntt": "^4.0.11",
-		"@wormhole-foundation/sdk-solana-ntt": "^4.0.10",
+		"@wormhole-foundation/sdk-solana-ntt": "^4.0.11",
 		"ethers": "^6.13.0"
 	},
 	"devDependencies": {
