@@ -16,14 +16,14 @@
 		"@project-serum/anchor": "^0.26.0",
 		"@solana/web3.js": "^1.95.0",
 		"@wormhole-foundation/sdk": "^4.11.0",
-		"@wormhole-foundation/sdk-evm-ntt": "^4.0.12",
-		"@wormhole-foundation/sdk-solana-ntt": "^4.0.12",
+		"@wormhole-foundation/sdk-evm-ntt": "^4.0.14",
+		"@wormhole-foundation/sdk-solana-ntt": "^4.0.14",
 		"ethers": "^6.13.0"
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.3",
 		"ts-node": "^10.9.0",
-		"typescript": "^5.0.0",
-		"tsx": "^4.19.0"
+		"tsx": "^4.19.0",
+		"typescript": "^5.0.0"
 	}
 }
